@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+from sklearn.model_selection import train_test_split
 
 
 class ProductData:
@@ -38,3 +39,11 @@ class ProductData:
         self.Y = Y
         X = self.prepdata
         self.X = X
+
+    def data_train(self):
+        self.data_prep()
+        x_train, x_test, y_train, y_test = train_test_split(self.X, self.Y, test_size = 0.3, random_state = 123)        
+        self.x_test = x_test
+        self.y_test = y_test
+        self.x_train = x_train
+        self.y_train = y_train
