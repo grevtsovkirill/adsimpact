@@ -1,5 +1,6 @@
 import pandas as pd
 import os
+import numpy as np
 from sklearn.model_selection import train_test_split
 
 
@@ -30,6 +31,7 @@ class ProductData:
 
         df = df.drop(columns=varlist)
         df = df.drop(columns=['WeekStart'])
+        df['QuantitySold'] = np.log(df['QuantitySold'])
         self.prepdata = df
 
     def data_prep(self):
