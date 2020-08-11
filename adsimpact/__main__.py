@@ -6,8 +6,8 @@ def main():
     Prepare data for training: 
     '''
     data = dataprep.ProductData()
-    data.load_data()
-    print(data.cleandata.head())
+    data.data_prep()
+    print(data.prepdata.head())
 
 if __name__ == "__main__":
     main()
