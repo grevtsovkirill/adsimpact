@@ -22,3 +22,16 @@ class ProductData:
         result = result.sort_values(by=['WeekStart'])
         self.cleandata = result
 
+    def cat_encode(self,varlist = ['Product', 'Channel']):
+        df = self.cleandata
+        for var in varlist:
+            df = pd.concat([df,pd.get_dummies(df[var], prefix=var)],axis=1)
+
+        df = df.drop(columns=varlist)
+        self.prepdata = df
+
+    def data_prep(self):
+        self.load_data()
+        self.cat_encode()
+        Y = self.prepdata['QuantitySold']
+        self.Y = Y
