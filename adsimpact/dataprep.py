@@ -22,16 +22,19 @@ class ProductData:
         result = result.sort_values(by=['WeekStart'])
         self.cleandata = result
 
-    def cat_encode(self,varlist = ['Product', 'Channel']):
+    def cat_encode(self,varlist = ['Product', 'Channel','isPromoPeriod']):
         df = self.cleandata
         for var in varlist:
             df = pd.concat([df,pd.get_dummies(df[var], prefix=var)],axis=1)
 
         df = df.drop(columns=varlist)
+        df = df.drop(columns=['WeekStart'])
         self.prepdata = df
 
     def data_prep(self):
         self.load_data()
         self.cat_encode()
-        Y = self.prepdata['QuantitySold']
+        Y = self.prepdata.pop('QuantitySold')
         self.Y = Y
+        X = self.prepdata
+        self.X = X
