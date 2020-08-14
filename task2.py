@@ -4,11 +4,12 @@ import argparse
 parser = argparse.ArgumentParser(description='Enter Start and Finish timestamps:')
 parser.add_argument('--t0', type=str, default='2019-12-02 08:00:00', help="Start timestamp") 
 parser.add_argument('--t1', type=str, default='2019-12-04 12:15:00', help="Finish timestamp") 
+parser.add_argument('-l', action='append',default=[], help="List of holidays") 
 args = parser.parse_args()
 
 t0 = vars(args)["t0"]
 t1 = vars(args)["t1"]
-
+l = vars(args)["l"]
 
     
 def hours_count(t0='2019-12-02 08:00:00',t1='2019-12-04 12:15:00',holidays=[],wd_start = 9,wd_end = 17):
@@ -21,14 +22,13 @@ def hours_count(t0='2019-12-02 08:00:00',t1='2019-12-04 12:15:00',holidays=[],wd
     
     t0 = valid_date(t0)
     t1 = valid_date(t1)
-
     delta_all = t1-t0
-    print(delta_all.days)
+
     if (t1-t0).total_seconds()<0:
         print("Start date: '{0}' can't be later than Finish date {1}.".format(t0,t1)  )
         raise ValueError
     full_shift = wd_end-wd_start
-    t0_hour=t0.hour + ( 0 if t0.minute==0 else 1)
+    t0_hour=t0.hour + ( 0 if t0.minute==0 and t0.second==0 else 1)
 
     def end_of_day(t):
         if t>wd_start and t<wd_end: dlt=t-wd_start
@@ -65,11 +65,11 @@ def hours_count(t0='2019-12-02 08:00:00',t1='2019-12-04 12:15:00',holidays=[],wd
         if is_wd(t1) and t1.hour>wd_start: dayF_h=end_of_day(t1.hour)
 
     total_hours = dayS_h+dayM_h+dayF_h
-    print(dayS_h,dayM_h,dayF_h,total_hours)
+    #print(dayS_h,dayM_h,dayF_h,total_hours)
     return total_hours
             
 
     
 if __name__ == "__main__":
-    print(hours_count(t0,t1))
+    print(hours_count(t0,t1,l))
     
